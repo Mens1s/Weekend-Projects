@@ -22,7 +22,11 @@ def index(request):
             euro_price = 15
         else:
             usd_price = int((data.json())["USD_TRY"])
-            euro_price = int((data.json())["EUR_TRY"])
+            data = requests.get("https://free.currconv.com/api/v7/convert?q=EUR_TRY&compact=ultra&apiKey=bd0dd3713dff14e2e75e")
+            if "503" in data.text:
+                euro_price = 15
+            else:
+                euro_price = int((data.json())["EUR_TRY"])
 
         if request.user.is_authenticated:
             coinBalance = (btc_price*MyUser.objects.get(email=request.user.email).btcBalance*usd_price + eth_price*MyUser.objects.get(email=request.user.email).ethBalance*usd_price)
