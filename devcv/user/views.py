@@ -6,9 +6,19 @@ def login_request(request):
     if request.user.is_authenticated:
         return redirect('index')
     if request.method == 'POST':
-        name = request.POST['email']
+        username = request.POST['username']
         password = request.POST['password']
-        print(name)
+        user = authenticate(request, username = username, password=password)
+        if user is not None:
+            print("gir")
+            login(request, user)
+            return redirect("index")
+        else:
+            print("girme")
+            render(request, 'login.html', {
+                'error':'Password or/and Username is wrong!',
+            })
+
     return render(request, 'login.html')
 
 def register_request(request):
@@ -30,9 +40,9 @@ def register_request(request):
             })
 
         else:
-            user = User.objects.create(email=email, username=username, first_name =name, last_name=surname, password = password)
+            user = User.objects.create_user(email=email, username=username, first_name =name, last_name=surname, password = password)
             user.save()
             authenticate(request, username=username, password=password)
             
-            return render(request,'index')
+            return render(request,'index.html')
     return render(request, 'register.html')
