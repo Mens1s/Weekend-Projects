@@ -6,4 +6,3 @@ class Userdata(models.Model):
     bio = models.TextField(max_length=450)
     school = models.TextField(max_length=20)
     projects = models.TextField(null=True)
-    

@@ -14,7 +14,6 @@ def login_request(request):
             login(request, user)
             return redirect("index")
         else:
-            print("girme")
             render(request, 'login.html', {
                 'error':'Password or/and Username is wrong!',
             })
